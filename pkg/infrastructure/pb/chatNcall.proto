@@ -1,0 +1,19 @@
+syntax="proto3";
+
+package chatNcall_proto;
+
+
+option go_package="./pkg/infrastructure/pb";
+
+
+service ChatNCallService{
+    rpc PassUserChat(RequestUserChat) returns (ResponseUserChat);
+   
+}
+
+
+message RequestUserChat{
+}
+message ResponseUserChat{
+
+}
