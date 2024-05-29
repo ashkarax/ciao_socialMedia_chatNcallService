@@ -3,11 +3,9 @@ package db_chatNcallSvc
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	config_chatNcallSvc "github.com/ashkarax/ciao_socialMedia_chatNcallService/pkg/infrastructure/config"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -52,13 +50,6 @@ func ConnectDatabaseMongo(config *config_chatNcallSvc.MongoDataBase) (*MongoDbCo
 	var mongoCollections MongoDbCollections
 	mongoCollections.OneToOneChats = client.Database(config.DataBase).Collection("OneToOneChats")
 	mongoCollections.OneToManyChats = client.Database(config.DataBase).Collection("OneToManyChats")
-
-	// Insert the string into the collection
-	_, err = mongoCollections.OneToManyChats.InsertOne(ctx, bson.D{
-		{Key: "message", Value: "Your string data here"}})
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	return &mongoCollections, nil
 }
