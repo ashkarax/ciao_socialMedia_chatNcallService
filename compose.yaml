@@ -1,0 +1,40 @@
+name: ciao_chatncall_service
+
+services:
+  mongo:
+    image: mongo
+    restart:  always
+    container_name: mongo_db_authsvc
+    shm_size: 128mb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    networks:
+      - ciao_net_bridge
+    volumes:
+      - mongo-data:/data/db
+    hostname: mongodb
+
+  ciao_chatncall:
+    image: ciao_chatncall_svc:production
+    build: .
+    restart: unless-stopped
+    container_name: chatNcall_svc
+    depends_on:
+      - mongo
+    networks:
+      - ciao_net_bridge
+    ports:
+      - 50053:50053
+    environment:
+      - DBHOST=mongodb
+      - DBUSER=mongo
+      - DBPASSWORD=mongo
+
+
+networks:
+  ciao_net_bridge:
+    driver: bridge
+volumes:
+  mongo-data:
+  

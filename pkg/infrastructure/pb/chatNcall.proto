@@ -1,5 +1,6 @@
 syntax="proto3";
 
+
 package chatNcall_proto;
 
 
@@ -7,13 +8,47 @@ option go_package="./pkg/infrastructure/pb";
 
 
 service ChatNCallService{
-    rpc PassUserChat(RequestUserChat) returns (ResponseUserChat);
-   
+    rpc GetOneToOneChats(RequestUserOneToOneChat) returns (ResponseUserOneToOneChat);
+    rpc GetRecentChatProfiles(RequestRecentChatProfiles) returns (ResponseRecentChatProfiles);
+}
+
+message RequestRecentChatProfiles{
+    string SenderID=1;
+    string Limit=2;
+    string Offset=3;
+}
+
+message SingelUserAndLastChat{
+    string UserID=5;
+    string UserName=1;
+    string UserProfileURL=2;
+    string LastMessageContent=3;
+    string LastMessageTimeStamp=4;
+}
+
+message ResponseRecentChatProfiles{
+    string ErrorMessage=1;
+    repeated SingelUserAndLastChat ActualData=2;
 }
 
 
-message RequestUserChat{
+message RequestUserOneToOneChat{
+    string SenderID=1;
+    string RecieverID=2;
+    string Limit=3;
+    string Offset=4;
 }
-message ResponseUserChat{
 
+message SingleOneToOneChat{
+    string messageID=1;
+    string SenderID=2;
+    string RecieverID=3;
+    string Content=4;
+    string Status=5;
+    string TimeStamp=6;
+}
+
+message ResponseUserOneToOneChat{
+    repeated SingleOneToOneChat Chat=1;
+    string ErrorMessage=2;
 }
