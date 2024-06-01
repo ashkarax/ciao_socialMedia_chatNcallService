@@ -42,7 +42,7 @@ func main() {
 				continue
 			}
 			log.Println("New connection from:", conn.RemoteAddr())
-			conn.Close() // Close the connection immediately for logging purposes
+			//conn.Close() // Close the connection immediately for logging purposes
 		}
 	}()
 
