@@ -27,7 +27,8 @@ func InitializeChatNCallSvc(config *config_chatNcallSvc.Config) (*server_chatNca
 	chatRepo := repository_chatNcallSvc.NewCharRepo(DB)
 	chatUseCase := usecase_chatNcallSvc.NewChatUseCase(chatRepo, client, &config.Kafka)
 
-	go chatUseCase.KafkaMessageConsumer()
+	go chatUseCase.KafkaOneToOneMessageConsumer()
+	go chatUseCase.KafkaOneToManyMessageConsumer()
 
 	return server_chatNcallSvc.NewChatNCallServiceServer(chatUseCase), nil
 }

@@ -24,6 +24,12 @@ const _ = grpc.SupportPackageIsVersion7
 type ChatNCallServiceClient interface {
 	GetOneToOneChats(ctx context.Context, in *RequestUserOneToOneChat, opts ...grpc.CallOption) (*ResponseUserOneToOneChat, error)
 	GetRecentChatProfiles(ctx context.Context, in *RequestRecentChatProfiles, opts ...grpc.CallOption) (*ResponseRecentChatProfiles, error)
+	GetGroupMembersInfo(ctx context.Context, in *RequestGroupMembersInfo, opts ...grpc.CallOption) (*ResponseGroupMembersInfo, error)
+	CreateNewGroup(ctx context.Context, in *RequestNewGroup, opts ...grpc.CallOption) (*ResponseNewGroup, error)
+	GetUserGroupChatSummary(ctx context.Context, in *RequestGroupChatSummary, opts ...grpc.CallOption) (*ResponseGroupChatSummary, error)
+	GetOneToManyChats(ctx context.Context, in *RequestGetOneToManyChats, opts ...grpc.CallOption) (*ResponseGetOneToManyChats, error)
+	AddMembersToGroup(ctx context.Context, in *RequestAddGroupMembers, opts ...grpc.CallOption) (*ResponseAddGroupMembers, error)
+	RemoveMemberFromGroup(ctx context.Context, in *RequestRemoveGroupMember, opts ...grpc.CallOption) (*ResponseRemoveGroupMember, error)
 }
 
 type chatNCallServiceClient struct {
@@ -52,12 +58,72 @@ func (c *chatNCallServiceClient) GetRecentChatProfiles(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *chatNCallServiceClient) GetGroupMembersInfo(ctx context.Context, in *RequestGroupMembersInfo, opts ...grpc.CallOption) (*ResponseGroupMembersInfo, error) {
+	out := new(ResponseGroupMembersInfo)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/GetGroupMembersInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatNCallServiceClient) CreateNewGroup(ctx context.Context, in *RequestNewGroup, opts ...grpc.CallOption) (*ResponseNewGroup, error) {
+	out := new(ResponseNewGroup)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/CreateNewGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatNCallServiceClient) GetUserGroupChatSummary(ctx context.Context, in *RequestGroupChatSummary, opts ...grpc.CallOption) (*ResponseGroupChatSummary, error) {
+	out := new(ResponseGroupChatSummary)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/GetUserGroupChatSummary", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatNCallServiceClient) GetOneToManyChats(ctx context.Context, in *RequestGetOneToManyChats, opts ...grpc.CallOption) (*ResponseGetOneToManyChats, error) {
+	out := new(ResponseGetOneToManyChats)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/GetOneToManyChats", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatNCallServiceClient) AddMembersToGroup(ctx context.Context, in *RequestAddGroupMembers, opts ...grpc.CallOption) (*ResponseAddGroupMembers, error) {
+	out := new(ResponseAddGroupMembers)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/AddMembersToGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatNCallServiceClient) RemoveMemberFromGroup(ctx context.Context, in *RequestRemoveGroupMember, opts ...grpc.CallOption) (*ResponseRemoveGroupMember, error) {
+	out := new(ResponseRemoveGroupMember)
+	err := c.cc.Invoke(ctx, "/chatNcall_proto.ChatNCallService/RemoveMemberFromGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatNCallServiceServer is the server API for ChatNCallService service.
 // All implementations must embed UnimplementedChatNCallServiceServer
 // for forward compatibility
 type ChatNCallServiceServer interface {
 	GetOneToOneChats(context.Context, *RequestUserOneToOneChat) (*ResponseUserOneToOneChat, error)
 	GetRecentChatProfiles(context.Context, *RequestRecentChatProfiles) (*ResponseRecentChatProfiles, error)
+	GetGroupMembersInfo(context.Context, *RequestGroupMembersInfo) (*ResponseGroupMembersInfo, error)
+	CreateNewGroup(context.Context, *RequestNewGroup) (*ResponseNewGroup, error)
+	GetUserGroupChatSummary(context.Context, *RequestGroupChatSummary) (*ResponseGroupChatSummary, error)
+	GetOneToManyChats(context.Context, *RequestGetOneToManyChats) (*ResponseGetOneToManyChats, error)
+	AddMembersToGroup(context.Context, *RequestAddGroupMembers) (*ResponseAddGroupMembers, error)
+	RemoveMemberFromGroup(context.Context, *RequestRemoveGroupMember) (*ResponseRemoveGroupMember, error)
 	mustEmbedUnimplementedChatNCallServiceServer()
 }
 
@@ -70,6 +136,24 @@ func (UnimplementedChatNCallServiceServer) GetOneToOneChats(context.Context, *Re
 }
 func (UnimplementedChatNCallServiceServer) GetRecentChatProfiles(context.Context, *RequestRecentChatProfiles) (*ResponseRecentChatProfiles, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRecentChatProfiles not implemented")
+}
+func (UnimplementedChatNCallServiceServer) GetGroupMembersInfo(context.Context, *RequestGroupMembersInfo) (*ResponseGroupMembersInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupMembersInfo not implemented")
+}
+func (UnimplementedChatNCallServiceServer) CreateNewGroup(context.Context, *RequestNewGroup) (*ResponseNewGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateNewGroup not implemented")
+}
+func (UnimplementedChatNCallServiceServer) GetUserGroupChatSummary(context.Context, *RequestGroupChatSummary) (*ResponseGroupChatSummary, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserGroupChatSummary not implemented")
+}
+func (UnimplementedChatNCallServiceServer) GetOneToManyChats(context.Context, *RequestGetOneToManyChats) (*ResponseGetOneToManyChats, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOneToManyChats not implemented")
+}
+func (UnimplementedChatNCallServiceServer) AddMembersToGroup(context.Context, *RequestAddGroupMembers) (*ResponseAddGroupMembers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMembersToGroup not implemented")
+}
+func (UnimplementedChatNCallServiceServer) RemoveMemberFromGroup(context.Context, *RequestRemoveGroupMember) (*ResponseRemoveGroupMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveMemberFromGroup not implemented")
 }
 func (UnimplementedChatNCallServiceServer) mustEmbedUnimplementedChatNCallServiceServer() {}
 
@@ -120,6 +204,114 @@ func _ChatNCallService_GetRecentChatProfiles_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatNCallService_GetGroupMembersInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestGroupMembersInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).GetGroupMembersInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/GetGroupMembersInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).GetGroupMembersInfo(ctx, req.(*RequestGroupMembersInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatNCallService_CreateNewGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestNewGroup)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).CreateNewGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/CreateNewGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).CreateNewGroup(ctx, req.(*RequestNewGroup))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatNCallService_GetUserGroupChatSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestGroupChatSummary)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).GetUserGroupChatSummary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/GetUserGroupChatSummary",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).GetUserGroupChatSummary(ctx, req.(*RequestGroupChatSummary))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatNCallService_GetOneToManyChats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestGetOneToManyChats)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).GetOneToManyChats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/GetOneToManyChats",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).GetOneToManyChats(ctx, req.(*RequestGetOneToManyChats))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatNCallService_AddMembersToGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAddGroupMembers)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).AddMembersToGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/AddMembersToGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).AddMembersToGroup(ctx, req.(*RequestAddGroupMembers))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatNCallService_RemoveMemberFromGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestRemoveGroupMember)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatNCallServiceServer).RemoveMemberFromGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatNcall_proto.ChatNCallService/RemoveMemberFromGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatNCallServiceServer).RemoveMemberFromGroup(ctx, req.(*RequestRemoveGroupMember))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatNCallService_ServiceDesc is the grpc.ServiceDesc for ChatNCallService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +326,30 @@ var ChatNCallService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRecentChatProfiles",
 			Handler:    _ChatNCallService_GetRecentChatProfiles_Handler,
+		},
+		{
+			MethodName: "GetGroupMembersInfo",
+			Handler:    _ChatNCallService_GetGroupMembersInfo_Handler,
+		},
+		{
+			MethodName: "CreateNewGroup",
+			Handler:    _ChatNCallService_CreateNewGroup_Handler,
+		},
+		{
+			MethodName: "GetUserGroupChatSummary",
+			Handler:    _ChatNCallService_GetUserGroupChatSummary_Handler,
+		},
+		{
+			MethodName: "GetOneToManyChats",
+			Handler:    _ChatNCallService_GetOneToManyChats_Handler,
+		},
+		{
+			MethodName: "AddMembersToGroup",
+			Handler:    _ChatNCallService_AddMembersToGroup_Handler,
+		},
+		{
+			MethodName: "RemoveMemberFromGroup",
+			Handler:    _ChatNCallService_RemoveMemberFromGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

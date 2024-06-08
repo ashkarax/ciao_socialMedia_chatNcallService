@@ -15,8 +15,9 @@ type MongoDataBase struct {
 }
 
 type ApacheKafka struct {
-	KafkaPort          string `mapstructure:"KAFKA_PORT"`
-	KafkaTopicOneToOne string `mapstructure:"KAFKA_TOPIC_1"`
+	KafkaPort           string `mapstructure:"KAFKA_PORT"`
+	KafkaTopicOneToOne  string `mapstructure:"KAFKA_TOPIC_1"`
+	KafkaTopicOneToMany string `mapstructure:"KAFKA_TOPIC_2"`
 }
 
 type Config struct {

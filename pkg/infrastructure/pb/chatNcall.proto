@@ -10,6 +10,93 @@ option go_package="./pkg/infrastructure/pb";
 service ChatNCallService{
     rpc GetOneToOneChats(RequestUserOneToOneChat) returns (ResponseUserOneToOneChat);
     rpc GetRecentChatProfiles(RequestRecentChatProfiles) returns (ResponseRecentChatProfiles);
+    rpc GetGroupMembersInfo(RequestGroupMembersInfo) returns (ResponseGroupMembersInfo);
+    rpc CreateNewGroup(RequestNewGroup) returns (ResponseNewGroup);
+    rpc GetUserGroupChatSummary(RequestGroupChatSummary) returns (ResponseGroupChatSummary);
+    rpc GetOneToManyChats(RequestGetOneToManyChats) returns (ResponseGetOneToManyChats);
+    rpc AddMembersToGroup(RequestAddGroupMembers) returns (ResponseAddGroupMembers);
+    rpc RemoveMemberFromGroup(RequestRemoveGroupMember) returns (ResponseRemoveGroupMember);
+}
+
+message ResponseRemoveGroupMember{
+    string ErrorMessage=1;
+}
+
+message RequestRemoveGroupMember{
+    string UserID=1;    
+    string GroupID=2;
+    string MemberID=3;
+}
+
+message RequestAddGroupMembers{
+    string UserID=1;
+    string GroupID=2;
+    repeated uint64 MemberIDs=3;
+}
+
+message ResponseAddGroupMembers{
+    string ErrorMessage=1;
+}
+
+message RequestGetOneToManyChats{
+    string UserID=1;
+    string GroupID=2;
+    string Limit=3;
+    string Offset=4;
+}
+
+message SingleOneToManyChat{
+    string messageID=1;
+    string SenderID=2;
+    string SenderUserName=3;
+    string SenderProfileImageURL=4;
+    string GroupID=5;
+    string Content=6;
+    string TimeStamp=7;
+}
+
+message ResponseGetOneToManyChats{
+    repeated SingleOneToManyChat Chat=1;
+    string ErrorMessage=2;
+}
+
+message SingleGroupChatDetails{
+    string GroupID=1;
+    string GroupName=2;
+    string GroupProfileImageURL=3;
+    string LastMessageContent=4;
+    string TimeStamp=5;
+    string SenderID=6;
+    string SenderUserName=7;
+}
+
+message ResponseGroupChatSummary{
+repeated SingleGroupChatDetails SingleEntity=1;
+string ErrorMessage=2;
+}
+
+message RequestGroupChatSummary{
+    string UserID=1;
+    string Limit=2;
+    string Offset=3;
+}
+
+message RequestNewGroup{
+string GroupName=1;
+repeated uint64 GroupMembers=2;
+string CreatorID=3;
+string CreatedAt=4;
+}
+message ResponseNewGroup{
+string ErrorMessage=1;
+}
+
+message RequestGroupMembersInfo{
+    string GroupID =1;
+}
+message ResponseGroupMembersInfo{
+    repeated string GroupMembers=1;
+    string ErrorMessage=2;
 }
 
 message RequestRecentChatProfiles{

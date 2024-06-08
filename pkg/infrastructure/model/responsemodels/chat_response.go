@@ -27,3 +27,43 @@ type RecentChatProfileResponse struct {
 	StringTime        string
 	Status            string
 }
+
+type GroupChatSummaryResponse struct {
+	GroupID            string `bson:"_id"`
+	GroupName          string `bson:"groupname"`
+	GroupProfileImgURL string
+	LastMessage        string
+	SenderID           string
+	SenderUserName     string
+	TimeStamp          time.Time
+	StringTime         string
+	Status             string
+}
+
+type GroupInfoLite struct {
+	ID                 primitive.ObjectID `bson:"_id"`
+	GroupID            string
+	GroupName          string `bson:"groupname"`
+	GroupProfileImgURL string
+}
+
+type OneToManyMessageLite struct {
+	ID          primitive.ObjectID `bson:"_id"`
+	MessageID   string
+	SenderID    string    `bson:"senderid"`
+	LastMessage string    `bson:"content"`
+	TimeStamp   time.Time `bson:"timestamp"`
+	Status      string    `bson:"status"`
+	StringTime  string
+}
+
+type OneToManyChatResponse struct {
+	ID                  primitive.ObjectID `bson:"_id"`
+	MessageID           string
+	SenderID            string    `bson:"senderid"`
+	Content             string    `bson:"content"`
+	TimeStamp           time.Time `bson:"timestamp"`
+	StringTime          string
+	SenderUserName      string
+	SenderProfileImgURL string
+}

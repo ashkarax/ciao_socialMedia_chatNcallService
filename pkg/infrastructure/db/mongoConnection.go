@@ -14,6 +14,7 @@ import (
 type MongoDbCollections struct {
 	OneToOneChats  *mongo.Collection
 	OneToManyChats *mongo.Collection
+	ChatGroups     *mongo.Collection
 }
 
 func ConnectDatabaseMongo(config *config_chatNcallSvc.MongoDataBase) (*MongoDbCollections, error) {
@@ -50,6 +51,7 @@ func ConnectDatabaseMongo(config *config_chatNcallSvc.MongoDataBase) (*MongoDbCo
 	var mongoCollections MongoDbCollections
 	mongoCollections.OneToOneChats = client.Database(config.DataBase).Collection("OneToOneChats")
 	mongoCollections.OneToManyChats = client.Database(config.DataBase).Collection("OneToManyChats")
+	mongoCollections.ChatGroups = client.Database(config.DataBase).Collection("ChatGroups")
 
 	return &mongoCollections, nil
 }
