@@ -190,11 +190,14 @@ func (r *ChatUseCase) GroupMembersList(groupId *string) (*[]string, error) {
 
 func (r *ChatUseCase) GetUserGroupChatSummary(userId, limit, offset *string) (*[]responsemodels_chatNcallSvc.GroupChatSummaryResponse, error) {
 	var groupChatSummary []responsemodels_chatNcallSvc.GroupChatSummaryResponse
+	var singlegroupChatSummary responsemodels_chatNcallSvc.GroupChatSummaryResponse
 
 	recentGroupProfiles, err := r.ChatRepo.GetRecentGroupProfilesOfUser(userId, limit, offset)
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("----------", recentGroupProfiles)
 
 	for i := range *recentGroupProfiles {
 		lastMessageDetails, err := r.ChatRepo.GetGroupLastMessageDetailsByGroupId(&(*recentGroupProfiles)[i].GroupID)
@@ -202,28 +205,30 @@ func (r *ChatUseCase) GetUserGroupChatSummary(userId, limit, offset *string) (*[
 			return nil, err
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
+		if lastMessageDetails != nil {
 
-		resp, err := r.Client.GetUserDetailsLiteForPostView(ctx, &pb.RequestUserId{
-			UserId: lastMessageDetails.SenderID,
-		})
-		if err != nil {
-			log.Println("-----error: from usecase:GetUserGroupChatSummary() authSvc down while calling GetUserDetailsLiteForPostView(),error:", err)
-			return nil, err
-		}
-		if resp.ErrorMessage != "" {
-			return nil, errors.New(resp.ErrorMessage)
-		}
-		var singlegroupChatSummary responsemodels_chatNcallSvc.GroupChatSummaryResponse
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+			defer cancel()
 
+			resp, err := r.Client.GetUserDetailsLiteForPostView(ctx, &pb.RequestUserId{
+				UserId: lastMessageDetails.SenderID,
+			})
+			if err != nil {
+				log.Println("-----error: from usecase:GetUserGroupChatSummary() authSvc down while calling GetUserDetailsLiteForPostView(),error:", err)
+				return nil, err
+			}
+			if resp.ErrorMessage != "" {
+				return nil, errors.New(resp.ErrorMessage)
+			}
+
+			singlegroupChatSummary.LastMessage = lastMessageDetails.LastMessage
+			singlegroupChatSummary.SenderID = lastMessageDetails.SenderID
+			singlegroupChatSummary.SenderUserName = resp.UserName
+			singlegroupChatSummary.StringTime = lastMessageDetails.StringTime
+		}
 		singlegroupChatSummary.GroupID = ((*recentGroupProfiles)[i].GroupID)
 		singlegroupChatSummary.GroupName = (*recentGroupProfiles)[i].GroupName
 		singlegroupChatSummary.GroupProfileImgURL = (*recentGroupProfiles)[i].GroupProfileImgURL
-		singlegroupChatSummary.LastMessage = lastMessageDetails.LastMessage
-		singlegroupChatSummary.SenderID = lastMessageDetails.SenderID
-		singlegroupChatSummary.SenderUserName = resp.UserName
-		singlegroupChatSummary.StringTime = lastMessageDetails.StringTime
 
 		groupChatSummary = append(groupChatSummary, singlegroupChatSummary)
 	}
