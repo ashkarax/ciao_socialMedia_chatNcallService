@@ -56,12 +56,14 @@ func (r *ChatUseCase) KafkaOneToOneMessageConsumer() {
 	defer partitionConsumer.Close()
 
 	for {
+		fmt.Println("************started looping through messages")
 		message := <-partitionConsumer.Messages()
 		msg, _ := unmarshalOneToOneChatMessage(message.Value)
 		fmt.Println("===", msg)
 		r.ChatRepo.StoreOneToOneChatToDB(msg)
 	}
 }
+
 func unmarshalOneToOneChatMessage(data []byte) (*requestmodels_chatNcallSvc.OneToOneChatRequest, error) {
 	var store requestmodels_chatNcallSvc.OneToOneChatRequest
 
